@@ -16,7 +16,7 @@
 ```
 Week 1  ✅ — LLM Foundations + Prompt Engineering
 Week 2  ✅ — LangChain Basics + RAG in Code
-Week 3  🔄 — Advanced RAG Techniques
+Week 3  ✅ — Advanced RAG Techniques
 Week 4  ⬜ — Advanced RAG + Conversation Memory
 Week 5  ⬜ — AI Agents
 Week 6  ⬜ — Agentic AI + Automation
@@ -141,12 +141,86 @@ langchain-basics/
 
 ---
 
+## ✅ Week 3 — Advanced RAG Techniques
+
+### Concepts Learned
+
+**4 Advanced RAG Techniques:**
+
+| Technique | What it does | Problem it solves |
+|-----------|-------------|-------------------|
+| Multi-Query Retrieval | LLM generates multiple search queries | Terminology mismatch |
+| Conversation Memory | Rewrites questions using chat history | Follow-up questions fail |
+| Reranking | Scores and reorders chunks by relevance | Wrong chunks ranked first |
+| Hybrid Search | Combines semantic + keyword search | Missing exact term matches |
+
+**Multi-Query Retrieval:**
+```
+User: "How many leaves do employees get?"
+LLM generates:
+→ "What is the leave entitlement for employees?"
+→ "How many casual leave days are provided?"
+→ "What is the vacation policy for staff?"
+All 3 search ChromaDB → more relevant chunks found ✅
+```
+
+**Conversational RAG:**
+```
+Without contextualization:
+"Can I carry them forward?" → searches as is → no match ❌
+
+With contextualization:
+"Can I carry them forward?" → rewritten using history →
+"Can casual leaves be carried forward?" → correct match ✅
+```
+
+**Reranking:**
+```
+Retrieved 5 chunks → LLM scores each 1-10 → reorder by score
+Most relevant chunk moves to position 1 → LLM sees it first ✅
+```
+
+**Hybrid Search:**
+```
+Semantic (ChromaDB) + Keyword (BM25) combined
+weights=[0.5, 0.5] → equal importance
+→ finds both meaning-based AND exact term matches ✅
+```
+
+### Files Created
+```
+advanced-rag/
+├── 01_multi_query.py    — Multi-query retrieval comparison
+├── 02_memory_rag.py     — Conversational RAG with memory
+├── 03_reranking.py      — LLM-based chunk reranking
+└── 04_hybrid_search.py  — BM25 + ChromaDB hybrid search
+```
+
+### Problems Faced & Solutions
+
+| Problem | Cause | Solution |
+|---------|-------|---------|
+| Multi-query used generic terms | LLM generated Western HR terminology | Custom prompt with Indian HR terms |
+| "Can I carry them forward?" failed | Retriever got vague pronoun query | Query contextualizer rewrites question |
+| Repeated chunks in multi-query | Same chunks retrieved multiple times | Deduplication with `seen` set |
+| chroma_db pushed to GitHub | Not in `.gitignore` | Added `**/chroma_db/` pattern |
+
+### Key Learnings
+- Chunk size matters more than retrieval technique — `size=1000` worked better than `size=500`
+- Multi-query needs domain-specific prompt — generic LLM terms don't match Indian HR document
+- Conversational RAG needs TWO prompts — one to rewrite query, one to answer
+- Reranking adds extra LLM calls — slower but more accurate
+- BM25 keyword search finds exact terms that semantic search misses
+- Production systems use dedicated reranking models (Cohere, BGE) instead of LLM scoring
+
+---
+
 ## 🛠️ Tech Stack So Far
 
 | Category | Tool | Used In |
 |----------|------|---------|
 | LLM | Gemini 1.5 Flash / 2.5 Flash | All projects |
-| Framework | LangChain | Week 2 |
+| Framework | LangChain, LangChain-Classic | Week 2, 3 |
 | Vector DB | ChromaDB | Week 2 RAG |
 | Embeddings | HuggingFace all-MiniLM-L6-v2 | Week 2 RAG |
 | RAG Platform | Dify | HR Policy Assistant |
@@ -182,9 +256,12 @@ langchain-basics/
 **On LangChain:**
 > "LangChain is a framework that provides ready-made components for building GenAI applications — LLM connections, prompt templates, chains, memory and vector store integrations. It's model agnostic so you can switch between Gemini, OpenAI or Claude with minimal code changes."
 
-**On the "leaves vs leave" problem:**
-> "I observed that RAG retrieval accuracy heavily depends on query-document terminology alignment when using keyword-based retrieval. This led me to explore semantic embeddings and multi-query retrieval techniques to solve the problem."
+**On Hybrid Search:**
+> "Hybrid search combines semantic search using vector embeddings with keyword search using BM25. Semantic search finds meaning-based matches while keyword search finds exact term matches. Combining both gives more complete retrieval than either alone."
+
+**On Reranking:**
+> "After initial retrieval, reranking scores each chunk by relevance to the query and reorders them so the most relevant chunk is first. This improves answer quality because LLMs perform better when the most relevant context appears early."
 
 ---
 
-*Last updated: Week 2 complete — Week 3 starting next*
+*Last updated: Week 3 complete — Week 4 starting next*
