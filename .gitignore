@@ -1,3 +1,11 @@
 .env
 __pycache__/
 *.pyc
+chroma_db/
+chroma_db_memory/
+chroma_db_rerank/
+chroma_db_hybrid/
+**/chroma_db/
+**/chroma_db_memory/
+**/chroma_db_rerank/
+**/chroma_db_hybrid/
