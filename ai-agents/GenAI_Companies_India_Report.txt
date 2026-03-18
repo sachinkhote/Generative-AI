@@ -1,0 +1,10 @@
+Report Generated: 2026-03-18 21:00
+==================================================
+
+Top 3 Generative AI Companies in India:
+
+1. Jellyfish Technologies: Specializes in developing custom large language model (LLM) solutions for enterprises, with a focus on secure deployment and proprietary AI product engineering.
+
+2. Infosys: Focuses on large-scale enterprise AI transformation, leveraging its Topaz platform for business modernization and automated code generation.
+
+3. Tata Consultancy Services (TCS): Drives cognitive business operations and customer transformation through AI-powered solutions across various sectors like finance, HR, and supply chain management.
