@@ -17,8 +17,8 @@
 Week 1  ✅ — LLM Foundations + Prompt Engineering
 Week 2  ✅ — LangChain Basics + RAG in Code
 Week 3  ✅ — Advanced RAG Techniques
-Week 4  ⬜ — Advanced RAG + Conversation Memory
-Week 5  ⬜ — AI Agents
+Week 4  ✅ — AI Agents
+Week 5  🔄 — LangGraph + Agentic AI
 Week 6  ⬜ — Agentic AI + Automation
 Week 7  ⬜ — Portfolio Projects
 Week 8  ⬜ — Interview Preparation
@@ -215,15 +215,79 @@ advanced-rag/
 
 ---
 
+## ✅ Week 4 — AI Agents
+
+### Concepts Learned
+
+**What is an AI Agent?**
+```
+Normal Chatbot = Reactive (user asks → bot answers)
+AI Agent       = Proactive (thinks → plans → uses tools → answers)
+
+4 parts of every agent:
+1. BRAIN    → LLM (thinks and decides)
+2. TOOLS    → Functions the agent can call
+3. MEMORY   → Remembers conversation
+4. PLANNING → Decides which tool to use and when
+```
+
+**ReAct Loop in action:**
+```
+User asks → THOUGHT → ACTION (tool call) → OBSERVATION → repeat → FINAL ANSWER
+```
+
+**4 Types of Tools Built:**
+
+| Tool | Purpose |
+|------|---------|
+| calculator | Math calculations — never wrong |
+| TavilySearch | Real-time web search |
+| hr_policy_search | RAG search on HR document |
+| save_report | Save findings to a file |
+
+**Key Agent Concepts:**
+- `@tool` decorator converts Python function into agent tool
+- Docstring of tool = description LLM reads to decide when to use it
+- `agent_scratchpad` = agent's working memory during reasoning
+- `verbose=True` = shows full Thought → Action → Observation loop
+- `max_iterations` = prevents infinite loops
+
+### Files Created
+```
+ai-agents/
+├── 01_simple_agent.py      — Calculator + word counter agent
+├── 02_web_search_agent.py  — Tavily web search + calculator
+├── 03_rag_agent.py         — HR Policy RAG + web + calculator
+└── 04_research_agent.py    — Full research agent with file saving
+```
+
+### Problems Faced & Solutions
+
+| Problem | Cause | Solution |
+|---------|-------|---------|
+| AgentExecutor import error | Moved to langchain-classic | from langchain_classic.agents import AgentExecutor |
+| Output showing raw list | Gemini returns list not string | Custom output cleaning loop |
+| Agent picking wrong tool | Tool descriptions too vague | Made docstrings more specific |
+
+### Key Learnings
+- Tool docstring is the most important part — LLM reads it to decide when to use the tool
+- Agent automatically chains multiple tools for complex questions
+- verbose=True is essential for debugging agent behavior
+- max_iterations=5 prevents agent from getting stuck in loops
+- Same ReAct pattern from Prompt Engineering Week — now implemented in code!
+
+---
+
 ## 🛠️ Tech Stack So Far
 
 | Category | Tool | Used In |
 |----------|------|---------|
 | LLM | Gemini 1.5 Flash / 2.5 Flash | All projects |
-| Framework | LangChain, LangChain-Classic | Week 2, 3 |
-| Vector DB | ChromaDB | Week 2 RAG |
-| Embeddings | HuggingFace all-MiniLM-L6-v2 | Week 2 RAG |
+| Framework | LangChain, LangChain-Classic | Week 2, 3, 4 |
+| Vector DB | ChromaDB | Week 2, 3, 4 |
+| Embeddings | HuggingFace all-MiniLM-L6-v2 | Week 2, 3, 4 |
 | RAG Platform | Dify | HR Policy Assistant |
+| Web Search | Tavily | Week 4 Agents |
 | Language | Python | All projects |
 
 ---
@@ -246,9 +310,17 @@ advanced-rag/
 - **Stack:** LangChain + ChromaDB + HuggingFace + Gemini
 - **Concepts:** Document loading, Chunking, Embeddings, Vector search, RAG chain
 
+### 4. AI Agents (4 progressively complex agents)
+- **What:** Agents that use tools to answer questions accurately
+- **Stack:** LangChain + Tavily + ChromaDB + Gemini
+- **Concepts:** ReAct loop, Tool calling, Multi-tool chaining, File saving
+
 ---
 
 ## 💡 Interview Talking Points
+
+**On AI Agents:**
+> "An AI Agent combines an LLM with tools and a ReAct loop — Reasoning, Acting and Observing. The LLM reads tool descriptions to decide which tool to use, calls it, gets the result and continues reasoning until it has enough information to answer. I built agents that combined web search, RAG retrieval and calculations in a single response."
 
 **On RAG:**
 > "RAG stands for Retrieval Augmented Generation. Instead of relying on the LLM's training data, we first retrieve relevant chunks from our document, then pass them as context to the LLM to generate a grounded answer. This reduces hallucination and keeps answers accurate."
@@ -264,4 +336,4 @@ advanced-rag/
 
 ---
 
-*Last updated: Week 3 complete — Week 4 starting next*
+*Last updated: Week 4 complete — Week 5 (LangGraph) starting next*
